@@ -1,9 +1,8 @@
 plugins {
-	id "net.fabricmc.fabric-loom-remap" version "${loom_version}"
+	id "net.fabricmc.fabric-loom" version "${loom_version}"
 	id "maven-publish"
 	id "com.modrinth.minotaur" version "2.+"
-	id 'checkstyle'
-	id "com.diffplug.spotless" version "8.2.1"
+	id "com.diffplug.spotless" version "8.2.1" apply false
 }
 
 version = project.mod_version
@@ -13,38 +12,37 @@ base {
 	archivesName = project.archives_base_name
 }
 
-repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+allprojects {
+	repositories {
+		// Add repositories to retrieve artifacts from in here.
+		// You should only use this when depending on other mods because
+		// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+		// See https://docs.gradle.org/current/userguide/declaring_repositories.html
+		// for more information about repositories.
 
-	// Reinforced Storage
-	maven {
-		url = "https://raw.githubusercontent.com/Aton-Kish/mcmod/maven"
+		// ModMenu (Reinforced Core deps)
+		maven {
+			url = "https://maven.terraformersmc.com/releases/"
+		}
+
+		// Cloth Config (Reinforced Core deps)
+		maven {
+			url = "https://maven.shedaniel.me/"
+		}
+
+		// Shulker Box Tooltip
+		maven {
+			url = "https://maven.misterpemodder.com/libs-release"
+		}
+
+		// // Quick Shulker
+		// maven {
+		// 	url = "https://maven.kyrptonaught.dev"
+		// }
 	}
-
-	// ModMenu (Reinforced Core deps)
-	maven {
-		url = "https://maven.terraformersmc.com/releases/"
-	}
-
-	// Cloth Config (Reinforced Core deps)
-	maven {
-		url = "https://maven.shedaniel.me/"
-	}
-
-	// Shulker Box Tooltip
-	maven {
-		url = "https://maven.misterpemodder.com/libs-release"
-	}
-
-	// // Quick Shulker
-	// maven {
-	// 	url = "https://maven.kyrptonaught.dev"
-	// }
 }
+
+evaluationDependsOn(":reinforced-core")
 
 loom {
 	splitEnvironmentSourceSets()
@@ -54,6 +52,12 @@ loom {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}
+
+		// Reinforced Core is built from the bundled subproject
+		"reinfcore" {
+			sourceSet("main", ":reinforced-core")
+			sourceSet("client", ":reinforced-core")
+		}
 	}
 
 	runs {
@@ -62,7 +66,7 @@ loom {
 			ideConfigGenerated true
 			name "Minecraft Server Test"
 			vmArg "-Dfabric-api.gametest"
-			vmArg "-Dfabric-api.gametest.report-file=${project.buildDir}/gametest/junit.xml"
+			vmArg "-Dfabric-api.gametest.report-file=${project.layout.buildDirectory.get()}/gametest/junit.xml"
 			vmArg "-Datonkish.reinfshulker.gametest"
 			runDir "build/gametest"
 		}
@@ -79,29 +83,42 @@ loom {
 	accessWidenerPath = file("src/main/resources/${project.mod_id}.accesswidener")
 }
 
+// Client game tests (real client, screenshots); kept out of the shipped jar: ./gradlew runClientGameTest
+fabricApi {
+	configureTests {
+		createSourceSet = true
+		modId = "reinfshulker-gametest"
+		enableGameTests = false
+		enableClientGameTests = true
+	}
+}
+
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// Reinforced Core
-	modImplementation "atonkish.reinfcore:reinforced-core:${project.reinforced_core_version}"
-	include "atonkish.reinfcore:reinforced-core:${project.reinforced_core_version}"
+	// Reinforced Core (bundled subproject)
+	implementation project(":reinforced-core")
+	clientImplementation rootProject.project(":reinforced-core").sourceSets.client.output
+	include project(":reinforced-core")
 
-	// Reinforced Chests
-	modImplementation "atonkish.reinfchest:reinforced-chests:${project.reinforced_chests_version}"
+	// Mod Menu / Cloth Config (Reinforced Core deps, available in dev runtime)
+	implementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
+	implementation("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
 
 	// Shulker Box Tooltip
-	modImplementation "com.misterpemodder:shulkerboxtooltip-fabric:${project.shulker_box_tooltip_version}"
+	implementation "com.misterpemodder:shulkerboxtooltip-fabric:${project.shulker_box_tooltip_version}"
 
 	// // Quick Shulker
-	// modImplementation "net.kyrptonaught:quickshulker:${project.quick_shulker_version}"
+	// implementation "net.kyrptonaught:quickshulker:${project.quick_shulker_version}"
 	// // Quick Shulker deps
-	// modImplementation "net.kyrptonaught:shulkerutils:${project.shulkerutils_version}"
+	// implementation "net.kyrptonaught:shulkerutils:${project.shulkerutils_version}"
 }
 
 processResources {
@@ -113,8 +130,8 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
-	it.options.release = 21
+	// Minecraft 26.1 upwards uses Java 25.
+	it.options.release = 25
 }
 
 java {
@@ -123,13 +140,16 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
 }
 
 jar {
+	def archivesName = base.archivesName.get()
+	inputs.property "archivesName", archivesName
+
 	from("LICENSE") {
-		rename { "${it}_${inputs.properties.archivesName}"}
+		rename { "${it}_${archivesName}"}
 	}
 }
 
@@ -149,48 +169,12 @@ publishing {
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
 		maven {
-			url = "file://${buildDir}/maven"
+			url = "file://${project.layout.buildDirectory.get()}/maven"
 		}
 	}
 }
 
-checkstyle {
-	toolVersion = "13.0.0"
-	configFile = file("${rootProject.projectDir}/checkstyle.xml")
-
-	configProperties = [
-		'org.checkstyle.google.severity': 'error'
-	]
-}
-
-spotless {
-	format 'misc', {
-		target '*.gradle', 'gradle.properties'
-
-		trimTrailingWhitespace()
-		leadingSpacesToTabs()
-		endWithNewline()
-	}
-
-	java {
-		googleJavaFormat()
-		importOrder(
-			'java',
-			'javax',
-			'org.slf4j',
-			'com.mojang',
-			'net.minecraft',
-			'net.fabricmc',
-			'org.spongepowered',
-			'',
-			'atonkish'
-		)
-		removeUnusedImports()
-		formatAnnotations()
-		trimTrailingWhitespace()
-		endWithNewline()
-	}
-}
+apply from: "${rootProject.projectDir}/gradle/style.gradle"
 
 task curseforge(type: Exec) {
 	environment "CURSEFORGE_API_TOKEN", project.findProperty("curseforge_token") ?: "Missing token"
@@ -209,11 +193,11 @@ task curseforge(type: Exec) {
 			--release-type "beta" \
 			--version "${project.version}" \
 			--name "Reinforced Shulker Boxes v${project.version}" \
-			--changelog "[v${project.version}](https://github.com/Aton-Kish/reinforced-shulker-boxes/releases/tag/v${java.net.URLEncoder.encode(project.version, "UTF-8")})" \
+			--changelog "[v${project.version}](https://github.com/Blazzy12/reinforced-shulker-boxes-26.3/releases/tag/v${java.net.URLEncoder.encode(project.version, "UTF-8")})" \
 			--environments "Client,Server" \
 			--loaders "Fabric" \
-			--java-versions "Java 21" \
-			--game-versions "1.21.11" \
+			--java-versions "Java 25" \
+			--game-versions "26.3" \
 			--dependencies "fabric-api=required,cloth-config=embedded,modmenu=optional,shulkerboxtooltip=optional,reinforced-chests=optional"
 	"""
 }
@@ -223,13 +207,13 @@ modrinth {
 
 	projectId = project.modrinth_id
 
-	uploadFile = remapJar
+	uploadFile = jar
 	versionNumber = project.version
 	versionName = "Reinforced Shulker Boxes v${project.version}"
 	versionType = "beta"
-	changelog = "[v${project.version}](https://github.com/Aton-Kish/reinforced-shulker-boxes/releases/tag/v" + java.net.URLEncoder.encode(project.version, "UTF-8") + ")"
+	changelog = "[v${project.version}](https://github.com/Blazzy12/reinforced-shulker-boxes-26.3/releases/tag/v" + java.net.URLEncoder.encode(project.version, "UTF-8") + ")"
 
-	gameVersions = ["1.21.11"]
+	gameVersions = ["26.3"]
 	loaders = ["fabric"]
 
 	dependencies {

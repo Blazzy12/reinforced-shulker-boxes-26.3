@@ -2,12 +2,15 @@ package atonkish.reinfshulker.block.cauldron;
 
 import java.util.Map;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.LeveledCauldronBlock;
-import net.minecraft.block.cauldron.CauldronBehavior;
-import net.minecraft.item.Item;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.DyeColor;
+import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.cauldron.CauldronInteractions;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
 
 import atonkish.reinfcore.util.ReinforcingMaterial;
 import atonkish.reinfshulker.block.ModBlocks;
@@ -16,13 +19,13 @@ import atonkish.reinfshulker.item.ModItems;
 import atonkish.reinfshulker.stat.ModStats;
 
 public class ModCauldronBehavior {
-  private static final CauldronBehavior CLEAN_REINFORCED_SHULKER_BOX;
+  private static final CauldronInteraction CLEAN_REINFORCED_SHULKER_BOX;
 
   public static void init() {
-    Map<Item, CauldronBehavior> map = CauldronBehavior.WATER_CAULDRON_BEHAVIOR.map();
     for (Map<DyeColor, Item> materialShulkerBoxMap : ModItems.REINFORCED_SHULKER_BOX_MAP.values()) {
       for (DyeColor color : DyeColor.values()) {
-        map.put(materialShulkerBoxMap.get(color), CLEAN_REINFORCED_SHULKER_BOX);
+        CauldronInteractions.WATER.put(
+            materialShulkerBoxMap.get(color), CLEAN_REINFORCED_SHULKER_BOX);
       }
     }
   }
@@ -30,21 +33,22 @@ public class ModCauldronBehavior {
   static {
     CLEAN_REINFORCED_SHULKER_BOX =
         (state, world, pos, player, hand, stack) -> {
-          Block block = Block.getBlockFromItem(stack.getItem());
+          Block block = Block.byItem(stack.getItem());
           if (!(block instanceof ReinforcedShulkerBoxBlock)) {
-            return ActionResult.PASS_TO_DEFAULT_BLOCK_ACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
           } else {
-            if (!world.isClient()) {
+            if (!world.isClientSide()) {
               ReinforcingMaterial material = ((ReinforcedShulkerBoxBlock) block).getMaterial();
-              player.setStackInHand(
-                  hand,
-                  stack.copyComponentsToNewStack(
-                      ModBlocks.REINFORCED_SHULKER_BOX_MAP.get(material).get((DyeColor) null), 1));
-              player.incrementStat(ModStats.CLEAN_REINFORCED_SHULKER_BOX_MAP.get(material));
-              LeveledCauldronBlock.decrementFluidLevel(state, world, pos);
+              ItemStack cleanedShulkerBox =
+                  stack.transmuteCopy(
+                      ModBlocks.REINFORCED_SHULKER_BOX_MAP.get(material).get((DyeColor) null), 1);
+              player.setItemInHand(
+                  hand, ItemUtils.createFilledResult(stack, player, cleanedShulkerBox, false));
+              player.awardStat(ModStats.CLEAN_REINFORCED_SHULKER_BOX_MAP.get(material));
+              LayeredCauldronBlock.lowerFillLevel(state, world, pos);
             }
 
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
           }
         };
   }

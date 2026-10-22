@@ -1,0 +1,8 @@
+{
+  "itemGroup.reinfcore.reinforced_storage": "Reinforced Storage",
+
+  "text.autoconfig.reinfcore.title": "Reinforced Core",
+  "text.autoconfig.reinfcore.option.screenType": "Тип экрана",
+  "text.autoconfig.reinfcore.option.scrollScreen": "Настройки экрана прокрутки",
+  "text.autoconfig.reinfcore.option.scrollScreen.rows": "Строк инвентаря"
+}

@@ -26,7 +26,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "reinfshulker:copper_shulker_box_from_copper_chest"
+        "recipes": "reinfshulker:copper_shulker_box_from_copper_chests"
       }
     }
   },

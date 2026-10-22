@@ -63,7 +63,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "reinfshulker:copper_shulker_box"
+        "recipes": "reinfshulker:copper_shulker_box"
       }
     }
   },

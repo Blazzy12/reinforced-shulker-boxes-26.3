@@ -1,0 +1,42 @@
+// Shared code style configuration (applied to the root project and subprojects)
+
+apply plugin: 'checkstyle'
+apply plugin: 'com.diffplug.spotless'
+
+checkstyle {
+	toolVersion = "13.0.0"
+	configFile = file("${rootProject.projectDir}/checkstyle.xml")
+
+	configProperties = [
+		'org.checkstyle.google.severity': 'error'
+	]
+}
+
+spotless {
+	format 'misc', {
+		target '*.gradle', 'gradle.properties'
+
+		trimTrailingWhitespace()
+		leadingSpacesToTabs()
+		endWithNewline()
+	}
+
+	java {
+		googleJavaFormat()
+		importOrder(
+			'java',
+			'javax',
+			'org.slf4j',
+			'com.mojang',
+			'net.minecraft',
+			'net.fabricmc',
+			'org.spongepowered',
+			'',
+			'atonkish'
+		)
+		removeUnusedImports()
+		formatAnnotations()
+		trimTrailingWhitespace()
+		endWithNewline()
+	}
+}

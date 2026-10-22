@@ -6,8 +6,8 @@ import java.util.Set;
 
 import com.mojang.serialization.Dynamic;
 
-import net.minecraft.datafixer.fix.ItemStackComponentizationFix;
-import net.minecraft.util.DyeColor;
+import net.minecraft.util.datafix.fixes.ItemStackComponentizationFix;
+import net.minecraft.world.item.DyeColor;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,9 +20,9 @@ import atonkish.reinfshulker.ReinforcedShulkerBoxesMod;
 
 @Mixin(ItemStackComponentizationFix.class)
 public class ItemStackComponentizationFixMixin {
-  @Inject(at = @At("RETURN"), method = "fixBlockEntityData", cancellable = true)
+  @Inject(at = @At("RETURN"), method = "fixBlockEntityTag", cancellable = true)
   private static <T> void fixBlockEntityData(
-      ItemStackComponentizationFix.StackData data,
+      ItemStackComponentizationFix.ItemStackData data,
       Dynamic<T> dynamic,
       String blockEntityId,
       CallbackInfoReturnable<Dynamic<T>> cir) {
@@ -34,11 +34,11 @@ public class ItemStackComponentizationFixMixin {
         itemIds.add(
             String.format(
                 "%s:%s_%s_shulker_box",
-                ReinforcedShulkerBoxesMod.MOD_ID, color.getId(), material.getName()));
+                ReinforcedShulkerBoxesMod.MOD_ID, color.getName(), material.getName()));
       }
     }
 
-    if (data.itemMatches(itemIds)) {
+    if (data.is(itemIds)) {
       List<Dynamic<T>> list =
           dynamic
               .get("Items")

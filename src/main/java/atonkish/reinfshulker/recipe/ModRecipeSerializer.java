@@ -1,10 +1,10 @@
 package atonkish.reinfshulker.recipe;
 
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import atonkish.reinfshulker.ReinforcedShulkerBoxesMod;
 
@@ -13,16 +13,15 @@ public class ModRecipeSerializer {
 
   public static void init() {}
 
-  private static <S extends RecipeSerializer<T>, T extends Recipe<?>> S register(
-      String id, S serializer) {
-    Identifier identifier = Identifier.of(ReinforcedShulkerBoxesMod.MOD_ID, id);
-    return Registry.register(Registries.RECIPE_SERIALIZER, identifier, serializer);
+  private static <T extends Recipe<?>> RecipeSerializer<T> register(
+      String id, RecipeSerializer<T> serializer) {
+    Identifier identifier = Identifier.fromNamespaceAndPath(ReinforcedShulkerBoxesMod.MOD_ID, id);
+    return Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, identifier, serializer);
   }
 
   static {
     REINFORCED_SHULKER_BOX =
         register(
-            "crafting_special_reinforcedshulkerbox",
-            new ReinforcedShulkerBoxCraftingRecipe.Serializer());
+            "crafting_special_reinforcedshulkerbox", ReinforcedShulkerBoxCraftingRecipe.SERIALIZER);
   }
 }

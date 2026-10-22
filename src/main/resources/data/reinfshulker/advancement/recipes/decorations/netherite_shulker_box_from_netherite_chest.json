@@ -1,4 +1,10 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": ["reinfchest"]
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": ["reinfshulker:netherite_shulker_box_from_netherite_chest"]
@@ -17,9 +23,11 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "reinfshulker:netherite_shulker_box_from_netherite_chest"
+        "recipes": "reinfshulker:netherite_shulker_box_from_netherite_chest"
       }
     }
   },
-  "requirements": [["has_netherite_chest", "has_the_recipe"]]
+  "requirements": [
+    ["has_netherite_chest", "has_the_recipe"]
+  ]
 }

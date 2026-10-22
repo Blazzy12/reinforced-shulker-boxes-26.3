@@ -1,0 +1,8 @@
+{
+  "itemGroup.reinfcore.reinforced_storage": "Reinforced Storage",
+
+  "text.autoconfig.reinfcore.title": "Reinforced Core",
+  "text.autoconfig.reinfcore.option.screenType": "スクリーンタイプ",
+  "text.autoconfig.reinfcore.option.scrollScreen": "スクロールスクリーンの設定",
+  "text.autoconfig.reinfcore.option.scrollScreen.rows": "インベントリの行"
+}

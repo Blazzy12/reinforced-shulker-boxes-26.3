@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "reinfshulker-gametest",
+  "version": "1.0.0",
+  "name": "Reinforced Shulker Boxes Client Game Tests",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-client-gametest": [
+      "atonkish.reinfshulker.clientgametest.ReinforcedShulkerBoxesClientGameTest"
+    ]
+  },
+  "depends": {
+    "reinfshulker": "*",
+    "fabric-client-gametest-api-v1": "*"
+  }
+}

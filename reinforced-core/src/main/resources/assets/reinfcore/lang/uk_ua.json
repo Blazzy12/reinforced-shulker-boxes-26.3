@@ -1,0 +1,9 @@
+{
+  "itemGroup.reinfcore.reinforced_storage": "Reinforced Storage",
+
+  "text.autoconfig.reinfcore.title": "Налаштування Reinforced Core",
+  "text.autoconfig.reinfcore.option.screenType": "Тип екрана",
+  "text.autoconfig.reinfcore.option.scrollScreen": "Налаштування екрана прокрутки",
+  "text.autoconfig.reinfcore.option.scrollScreen.rows": "Рядки інвентарю",
+  "modmenu.descriptionTranslation.reinfcore": "Бібліотека для серії модів «Reinforced storage»"
+}

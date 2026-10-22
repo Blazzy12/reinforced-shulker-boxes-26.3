@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     env:
-      JAVA_VERSION: "21"
+      JAVA_VERSION: "25"
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
@@ -38,7 +38,7 @@ jobs:
     needs: build
     runs-on: ubuntu-24.04
     env:
-      JAVA_VERSION: "21"
+      JAVA_VERSION: "25"
       ORG_GRADLE_PROJECT_curseforge_token: ${{ secrets.CURSEFORGE_TOKEN }}
     steps:
       - name: checkout repository
@@ -64,7 +64,7 @@ jobs:
     needs: build
     runs-on: ubuntu-24.04
     env:
-      JAVA_VERSION: "21"
+      JAVA_VERSION: "25"
       ORG_GRADLE_PROJECT_modrinth_token: ${{ secrets.MODRINTH_TOKEN }}
     steps:
       - name: checkout repository

@@ -2,15 +2,9 @@
   "required": true,
   "minVersion": "0.8",
   "package": "atonkish.reinfshulker.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_25",
   "mixins": [
     "BlockEntityAccessor",
-    "BlockEntityTypeAccessor",
-    "BlockEntityTypeInvoker",
-    "ItemStackAccessor",
-    "ShulkerBoxBlockMixin",
-    "ServerAdvancementLoaderMixin",
-
     "datafixer.fix.ItemStackComponentizationFixMixin",
     "datafixer.schema.Schema1460Mixin"
   ],

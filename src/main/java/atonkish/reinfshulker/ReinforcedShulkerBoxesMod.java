@@ -3,12 +3,11 @@ package atonkish.reinfshulker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.minecraft.util.DyeColor;
+import net.minecraft.world.item.DyeColor;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 
-import atonkish.reinfchest.ReinforcedChestsMod;
 import atonkish.reinfcore.api.ReinforcedCoreModInitializer;
 import atonkish.reinfcore.api.ReinforcedCoreRegistry;
 import atonkish.reinfcore.util.ReinforcingMaterial;
@@ -23,11 +22,13 @@ public class ReinforcedShulkerBoxesMod implements ModInitializer, ReinforcedCore
   public static final String MOD_ID = "reinfshulker";
   public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+  public static final String REINFCHEST_MOD_ID = "reinfchest";
+
   public static boolean IS_REINFCHEST_LOADED = false;
 
   @Override
   public void onInitialize() {
-    IS_REINFCHEST_LOADED = FabricLoader.getInstance().isModLoaded(ReinforcedChestsMod.MOD_ID);
+    IS_REINFCHEST_LOADED = FabricLoader.getInstance().isModLoaded(REINFCHEST_MOD_ID);
   }
 
   @Override

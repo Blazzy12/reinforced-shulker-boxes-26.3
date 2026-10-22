@@ -1,0 +1,81 @@
+apply plugin: "net.fabricmc.fabric-loom"
+apply plugin: "maven-publish"
+apply from: "${rootProject.projectDir}/gradle/style.gradle"
+
+version = project.reinforced_core_version
+group = "atonkish.reinfcore"
+
+base {
+	archivesName = "reinforced-core"
+}
+
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		"reinfcore" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+
+	accessWidenerPath = file("src/main/resources/reinfcore.accesswidener")
+}
+
+dependencies {
+	// To change the versions see the gradle.properties file
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	// Fabric API. This is technically optional, but you probably want it anyway.
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	// Auto Config:
+	// see https://shedaniel.gitbook.io/cloth-config/
+	implementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
+
+	api("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+	include "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}"
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": inputs.properties.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 25
+}
+
+java {
+	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
+}
+
+jar {
+	from("LICENSE") {
+		rename { "${it}_reinforced-core"}
+	}
+}
+
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			artifactId = "reinforced-core"
+			from components.java
+		}
+	}
+
+	repositories {
+		maven {
+			url = "file://${rootProject.layout.buildDirectory.get()}/maven"
+		}
+	}
+}

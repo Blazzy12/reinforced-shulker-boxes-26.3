@@ -63,7 +63,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "reinfshulker:diamond_shulker_box"
+        "recipes": "reinfshulker:diamond_shulker_box"
       }
     }
   },

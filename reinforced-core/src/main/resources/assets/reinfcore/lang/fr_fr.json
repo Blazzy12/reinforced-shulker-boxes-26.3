@@ -1,0 +1,8 @@
+{
+  "itemGroup.reinfcore.reinforced_storage": "Reinforced Storage",
+
+  "text.autoconfig.reinfcore.title": "Reinforced Core",
+  "text.autoconfig.reinfcore.option.screenType": "Type d'écran",
+  "text.autoconfig.reinfcore.option.scrollScreen": "Paramètres de défilement de l'écran",
+  "text.autoconfig.reinfcore.option.scrollScreen.rows": "Lignes d'inventaire"
+}

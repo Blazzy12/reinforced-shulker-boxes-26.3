@@ -6,10 +6,11 @@
   "name": "Reinforced Shulker Boxes",
   "description": "Adds reinforced shulker boxes.",
   "authors": ["Aton-Kish"],
+  "contributors": ["Blazzy12"],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/reinforced-shulker-boxes",
-    "sources": "https://github.com/Aton-Kish/reinforced-shulker-boxes",
-    "issues": "https://github.com/Aton-Kish/reinforced-shulker-boxes/issues"
+    "sources": "https://github.com/Blazzy12/reinforced-shulker-boxes-26.3",
+    "issues": "https://github.com/Blazzy12/reinforced-shulker-boxes-26.3/issues"
   },
 
   "license": "MIT",
@@ -19,24 +20,20 @@
   "entrypoints": {
     "main": ["atonkish.reinfshulker.ReinforcedShulkerBoxesMod"],
     "reinfcore": ["atonkish.reinfshulker.ReinforcedShulkerBoxesMod"],
-    "reinfcore-client": [
-      "atonkish.reinfshulker.ReinforcedShulkerBoxesClientMod"
-    ],
-    "reinfcore-gametest": [
-      "atonkish.reinfshulker.gametest.ReinforcedShulkerBoxesModGameTest"
-    ],
-    "shulkerboxtooltip": [
-      "atonkish.reinfshulker.integration.shulkerboxtooltip.ShulkerBoxTooltip"
-    ],
+    "reinfcore-client": ["atonkish.reinfshulker.ReinforcedShulkerBoxesClientMod"],
+    "reinfcore-gametest": ["atonkish.reinfshulker.gametest.ReinforcedShulkerBoxesModGameTest"],
+    "shulkerboxtooltip": ["atonkish.reinfshulker.integration.shulkerboxtooltip.ShulkerBoxTooltip"],
     "modmenu": ["atonkish.reinfcore.integration.modmenu.ModMenu"]
   },
   "mixins": ["reinfshulker.mixins.json"],
+  "accessWidener": "reinfshulker.accesswidener",
 
   "depends": {
-    "fabricloader": ">=0.18.2",
-    "minecraft": "~1.21.11",
-    "java": ">=21",
-    "fabric-api": "*"
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*",
+    "reinfcore": "*"
   },
   "suggests": {
     "modmenu": "*",

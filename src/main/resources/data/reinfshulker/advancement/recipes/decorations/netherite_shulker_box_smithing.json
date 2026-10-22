@@ -63,7 +63,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "reinfshulker:netherite_shulker_box_smithing"
+        "recipes": "reinfshulker:netherite_shulker_box_smithing"
       }
     }
   },

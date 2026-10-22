@@ -1,4 +1,10 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": ["reinfchest"]
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": ["reinfshulker:iron_shulker_box_from_iron_chest"]
@@ -17,9 +23,11 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "reinfshulker:iron_shulker_box_from_iron_chest"
+        "recipes": "reinfshulker:iron_shulker_box_from_iron_chest"
       }
     }
   },
-  "requirements": [["has_iron_chest", "has_the_recipe"]]
+  "requirements": [
+    ["has_iron_chest", "has_the_recipe"]
+  ]
 }
