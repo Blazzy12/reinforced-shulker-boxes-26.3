@@ -15,8 +15,9 @@ The Reinforced Shulker Boxes mod adds reinforced shulker boxes.
 > This fork ports the mod to **Minecraft 26.3 (Fabric)**. Reinforced Core has no 26.x release upstream, so it is
 > ported here too, lives in [`reinforced-core/`](./reinforced-core) and is bundled (jar-in-jar) in the mod.
 >
+> - Download: the built jar is attached to each [GitHub release](https://github.com/Blazzy12/reinforced-shulker-boxes-26.3/releases)
 > - Requirements: Fabric Loader 0.19.5+, Fabric API, Java 25
-> - Build: `./gradlew build` (the jar is in `build/libs/`)
+> - Build: `./gradlew build` (the jar is in `build/libs/`). Pushing a `v<mod_version>` tag builds, tests and publishes a release
 > - Server game tests: `./gradlew runServerTest`; client game tests with screenshots: `./gradlew runClientGameTest`
 > - Recipes from [Reinforced Chests](https://github.com/Aton-Kish/reinforced-chests) only load when that mod is
 >   installed (it has no 26.x release yet).

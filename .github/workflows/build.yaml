@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
-          distribution: "microsoft"
+          distribution: "temurin"
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
       - name: build

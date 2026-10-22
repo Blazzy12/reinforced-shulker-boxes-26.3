@@ -1,5 +1,4 @@
 apply plugin: "net.fabricmc.fabric-loom"
-apply plugin: "maven-publish"
 apply from: "${rootProject.projectDir}/gradle/style.gradle"
 
 version = project.reinforced_core_version
@@ -62,20 +61,5 @@ java {
 jar {
 	from("LICENSE") {
 		rename { "${it}_reinforced-core"}
-	}
-}
-
-publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			artifactId = "reinforced-core"
-			from components.java
-		}
-	}
-
-	repositories {
-		maven {
-			url = "file://${rootProject.layout.buildDirectory.get()}/maven"
-		}
 	}
 }
