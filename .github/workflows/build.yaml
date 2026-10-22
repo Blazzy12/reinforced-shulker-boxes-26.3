@@ -7,6 +7,10 @@ on:
       - 2[0-9].[0-9]+
       - 2[0-9].[0-9]+.[0-9]+
 
+permissions:
+  contents: read
+  checks: write
+
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -14,11 +18,11 @@ jobs:
       JAVA_VERSION: "25"
     steps:
       - name: checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: validate gradle wrapper
-        uses: gradle/actions/wrapper-validation@v4
+        uses: gradle/actions/wrapper-validation@v6
       - name: setup jdk ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: "temurin"
@@ -27,12 +31,12 @@ jobs:
       - name: build
         run: ./gradlew runServerTest build
       - name: capture build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Artifacts
           path: build/libs/
       - name: publish test report
-        uses: mikepenz/action-junit-report@v4
+        uses: mikepenz/action-junit-report@v6
         if: success() || failure() # always run even if the previous step fails
         with:
           report_paths: build/gametest/junit.xml
